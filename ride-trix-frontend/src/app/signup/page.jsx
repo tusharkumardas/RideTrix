@@ -22,7 +22,7 @@ export default function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!formData.name || !formData.email || !formData.password || !formData.role) {
@@ -30,12 +30,33 @@ export default function Signup() {
     return;
   }
 
-  console.log("Form Submitted:", formData);
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-  if (formData.role === "customer") {
-    router.push("/dashboard/customer");
-  } else if (formData.role === "provider") {
-    router.push("/dashboard/provider");
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
+      return;
+    }
+
+    alert("Signup successful 🎉");
+
+    if (formData.role === "customer") {
+      router.push("/dashboard/customer");
+    } else {
+      router.push("/dashboard/provider");
+    }
+
+  } catch (error) {
+    console.error("Signup Error:", error);
+    alert("Server error. Please try again.");
   }
 };
 

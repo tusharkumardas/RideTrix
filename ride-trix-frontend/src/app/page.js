@@ -1,55 +1,95 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import BikeCard from "@/components/BikeCard";
-import Footer from "@/components/Footer";
+"use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { Bike, ShieldCheck, Clock, Moon, Sun } from "lucide-react";
 
 export default function Home() {
 
-  const bikes = [
-    {
-      id: 1,
-      name: "Royal Enfield Classic 350",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1558981403-c5f9891b3e88"
-    },
-    {
-      id: 2,
-      name: "Yamaha R15",
-      price: 150,
-      image: "https://images.unsplash.com/photo-1611242320536-f12d3541249b"
-    },
-    {
-      id: 3,
-      name: "Honda Activa",
-      price: 80,
-      image: "https://images.unsplash.com/photo-1592194996308-7b43878e84a6"
-    }
-  ];
+  const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <div>
-      <Navbar />
-      <Hero />
+    <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-gradient-to-br from-blue-100 via-white to-purple-100 text-black"} min-h-screen`}>
 
-      <section className="px-10 py-16 bg-gray-50">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          Popular Bikes
+      {/* Top Section */}
+      <div className="flex justify-between items-center px-10 py-6 backdrop-blur-md bg-white/40 dark:bg-gray-800/60 border-b border-white/30 shadow-sm">
+        <h1 className="text-3xl font-bold">RideTrix</h1>
+
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="p-2 rounded-full bg-white shadow-md"
+        >
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+      </div>
+
+      {/* Hero Section */}
+      <div className="flex flex-col items-center text-center px-10 py-24">
+        <h2 className="text-5xl md:text-6xl font-bold leading-tight">
+          Rent Bikes Easily <br />
+          <span className="text-blue-600">Anytime, Anywhere</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {bikes.map((bike) => (
-            <BikeCard
-              key={bike.id}
-              name={bike.name}
-              price={bike.price}
-              image={bike.image}
-            />
-          ))}
+        <p className="mt-6 text-xl max-w-2xl">
+          A premium marketplace connecting bike owners and riders
+          with seamless booking and secure payments.
+        </p>
+
+        <div className="mt-10 flex gap-6">
+          <Link href="/signup">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-lg shadow-lg transition hover:scale-105">
+              Get Started
+            </button>
+          </Link>
+
+          <Link href="/login">
+            <button className="backdrop-blur-md bg-white/60 border border-white/40 px-8 py-4 rounded-2xl text-lg shadow-lg transition hover:scale-105">
+              Login
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="px-10 pb-24">
+        <h3 className="text-4xl font-bold text-center mb-16">
+          Why Choose RideTrix?
+        </h3>
+
+        <div className="grid md:grid-cols-3 gap-12">
+
+          <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-3xl p-10 shadow-xl hover:-translate-y-3 transition duration-300 text-center">
+            <Bike size={40} className="mx-auto mb-6 text-blue-600" />
+            <h4 className="text-2xl font-bold mb-4">
+              Wide Selection
+            </h4>
+            <p className="text-lg">
+              Choose from a variety of premium bikes listed by trusted providers.
+            </p>
+          </div>
+
+          <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-3xl p-10 shadow-xl hover:-translate-y-3 transition duration-300 text-center">
+            <ShieldCheck size={40} className="mx-auto mb-6 text-green-600" />
+            <h4 className="text-2xl font-bold mb-4">
+              Secure Payments
+            </h4>
+            <p className="text-lg">
+              Seamless and secure payment gateway integration.
+            </p>
+          </div>
+
+          <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-3xl p-10 shadow-xl hover:-translate-y-3 transition duration-300 text-center">
+            <Clock size={40} className="mx-auto mb-6 text-purple-600" />
+            <h4 className="text-2xl font-bold mb-4">
+              Instant Booking
+            </h4>
+            <p className="text-lg">
+              Book bikes instantly with real-time availability.
+            </p>
+          </div>
 
         </div>
-      </section>
-      <Footer/>
+      </div>
 
     </div>
   );

@@ -9,8 +9,7 @@ export default function Login() {
 
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
-    role: ""
+    password: ""
   });
 
   const handleChange = (e) => {
@@ -20,21 +19,45 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password || !formData.role) {
+    if (!formData.email || !formData.password) {
       alert("Please fill all fields");
       return;
     }
 
-    console.log("Login Data:", formData);
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulated login redirect
-    if (formData.role === "customer") {
-      router.push("/dashboard/customer");
-    } else if (formData.role === "provider") {
-      router.push("/dashboard/provider");
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
+
+      // 🔥 Store JWT + role
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+
+      alert("Login successful 🎉");
+
+      if (data.role === "customer") {
+        router.push("/dashboard/customer");
+      } else {
+        router.push("/dashboard/provider");
+      }
+
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Server error. Please try again.");
     }
   };
 
@@ -63,16 +86,6 @@ export default function Login() {
             className="w-full px-4 py-2 border rounded-lg"
             onChange={handleChange}
           />
-
-          <select
-            name="role"
-            className="w-full px-4 py-2 border rounded-lg"
-            onChange={handleChange}
-          >
-            <option value="">Select Role</option>
-            <option value="customer">Customer</option>
-            <option value="provider">Provider</option>
-          </select>
 
           <button
             type="submit"
