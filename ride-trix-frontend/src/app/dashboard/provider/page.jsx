@@ -59,9 +59,12 @@ export default function ProviderDashboard() {
             My Bikes
           </div>
 
-          <div className="flex items-center gap-3 cursor-pointer hover:text-blue-500">
-            <PlusCircle size={20} />
-            Add Bike
+          <div
+              onClick={() => router.push("/dashboard/provider/add-bike")}
+              className="flex items-center gap-3 cursor-pointer hover:text-blue-500"
+              >
+              <PlusCircle size={20} />
+              Add Bike
           </div>
 
           <div
